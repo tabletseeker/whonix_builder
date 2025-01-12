@@ -1,0 +1,20 @@
+# Empty listen_addresses to use systemd socket activation
+listen_addresses = ['127.0.2.1:53']
+server_names = ['cloudflare']
+log_file = '/home/user/logs/dnscrypt-proxy.log'
+log_files_max_size = 10
+
+[query_log]
+  file = '/home/user/logs/query.log'
+  format = 'tsv'
+  
+[nx_log]
+  file = '/home/user/logs/nx.log'
+  format = 'tsv'
+
+[sources]
+  [sources.'public-resolvers']
+  cache_file = '/var/cache/dnscrypt-proxy/public-resolvers.md'
+  minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+  refresh_delay = 72
+  prefix = ''
