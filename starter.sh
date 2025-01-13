@@ -24,7 +24,7 @@ Port:3142
 Proxy: http://127.0.0.1:3142
 AllowUserPorts: 0
 EOF
-} && echo -e 'Acquire::http { Proxy "http://proxy:3142"; }\nAcquire::BlockDotOnion "false";' > /etc/apt/apt.conf.d/30user && \
+} && echo -e 'Acquire::http { Proxy "http://127.0.0.1:3142"; }\nAcquire::BlockDotOnion "false";' > /etc/apt/apt.conf.d/30user && \
 systemctl daemon-reload && systemctl start tor.service && \
 systemctl restart apt-cacher-ng.service && sleep 1
 
