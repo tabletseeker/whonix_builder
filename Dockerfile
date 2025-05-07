@@ -1,9 +1,10 @@
 FROM debian:bookworm AS baseimage
 
+ARG DNSCRYPT_VER
+
 	### enable https sources ###
 RUN apt-get update && apt-get install -y apt-transport-https ca-certificates && \
-	echo "deb https://deb.debian.org/debian bookworm main contrib non-free-firmware" > /etc/apt/sources.list && \
-	rm -f /etc/apt/sources.list.d/debian.sources && \
+	sed -i "s|http|https|g" /etc/apt/sources.list.d/debian.sources && \
 	apt-get update && apt-get install -y systemd systemd-sysv dbus dbus-user-session git \
 	time curl lsb-release fakeroot dpkg-dev fasttrack-archive-keyring \
 	apt-utils wget procps debian-keyring sudo adduser torsocks tor apt-transport-tor && \
@@ -28,23 +29,11 @@ RUN apt-get update && apt-get install -y apt-transport-https ca-certificates && 
 	sudo adduser user sudo && \
 	echo '%sudo ALL=(ALL:ALL) NOPASSWD:ALL' | sudo EDITOR=tee visudo -f /etc/sudoers.d/dist-build-sudo-passwordless >/dev/null && \	
 	### setup dnscrypt-proxy ###
- 	wget https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.1.5/dnscrypt-proxy-linux_x86_64-2.1.5.tar.gz -O /tmp/dnscrypt-proxy.tar.gz && \
-	tar xvf /tmp/*.tar.gz -C /tmp && cp /tmp/linux-x86_64/dnscrypt-proxy /usr/bin/dnscrypt-proxy && rm -rf /tmp/* && mkdir -p \
-	/etc/dnscrypt-proxy /var/cache/dnscrypt-proxy /lib/systemd/system/apt-cacher-ng.service.d
+ 	wget -qO- https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/${DNSCRYPT_VER}/dnscrypt-proxy-linux_x86_64-${DNSCRYPT_VER}.tar.gz | \
+ 	tar --strip-components 1 -xvz -C /usr/bin linux-x86_64/dnscrypt-proxy && \
+ 	mkdir -p /etc/dnscrypt-proxy /var/cache/dnscrypt-proxy /lib/systemd/system/apt-cacher-ng.service.d
 
 FROM baseimage
-
-ENV WHONIX_TAG="17.2.0.7-stable"
-ENV TBB_VERSION="13.5.1"
-ENV FLAVOR_GW=""
-ENV FLAVOR_WS=""
-ENV TARGET="raw"
-ENV ARCH="amd64"
-ENV REPO="true"
-ENV TYPE="vm"
-ENV CLEAN="true"
-ENV APT_ONION="false"
-ENV OPTS=""
 
 COPY systemd_init.sh starter.sh 50_user.conf /
 COPY dnscrypt-proxy.toml /etc/dnscrypt-proxy/dnscrypt-proxy.toml
