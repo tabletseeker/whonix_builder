@@ -16,9 +16,9 @@ TBB=""
 LATEST=true
 ${LATEST} && latest_ver
 
-mkdir -p ${VOLUME}
-sudo chown -R 1000:1000 ${VOLUME}
-sudo chmod -R 700 ${VOLUME}
+[ -d ${VOLUME} ] || { mkdir -p ${VOLUME};
+sudo chown -R 1000:1000 ${VOLUME};
+sudo chmod -R 700 ${VOLUME}; }
 
 sudo docker run --name whonix-builder -it --rm --privileged \
 	--env "TAG=${TAG}" \
