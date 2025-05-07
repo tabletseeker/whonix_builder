@@ -9,7 +9,7 @@ TBB=$(curl -s https://aus1.torproject.org/torbrowser/update_3/release/download-l
 
 }
 
-VOLUME="$HOME/whonix-builder"
+VOLUME="$HOME/whonix_builder"
 IMG="tabletseeker/whonix_builder"
 TAG="17.3.9.2-developers-only"
 TBB="14.5.1"
