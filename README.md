@@ -9,7 +9,7 @@ Utilizes a debian:bookworm Docker Container that automatically verifies and buil
 ```
 git clone https://github.com/tabletseeker/whonix_builder -b main
 ```
-* Enter ytfzf_prime directory:
+* Enter whonix_builder directory:
 ```
 cd whonix_builder
 ```
