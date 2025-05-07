@@ -5,67 +5,30 @@ Utilizes a debian:bookworm Docker Container that automatically verifies and buil
 ## Usage
 
 ### Building Docker Image
-* Clone whonix_builder repo:
+* Clone repo:
 ```
 git clone https://github.com/tabletseeker/whonix_builder -b main
 ```
-* Enter whonix_builder directory:
+* Enter ytfzf_prime directory:
 ```
 cd whonix_builder
 ```
-* Make scripts executable:
+* Run Docker build script:
 ```
-chmod +x *.sh
+./build.sh
 ```
-* Start Docker Image creation:
+* Run container:
 ```
-docker build .
+./run.sh
 ```
 * Restart Docker Daemon:
 ```
 systemctl restart docker
 ```
-### Run whonix_builder without ENV variables:
-The Dockerfile already contains default values for all environment variables which will be included in the image.
-If you execute `docker run` without assigning new values, the defaults will apply.
-```
-docker run --name whonix_builder -it --privileged \
-	--volume <HOST_DIR>:/home/user --dns 127.0.2.1 <IMAGE_ID> 
-```
-### Run whonix_builder with ENV variables:
-```
-docker run --name whonix_builder -it --privileged \
-	--env 'WHONIX_TAG=17.2.0.7-stable' \
-	--env 'TBB_VERSION=13.5.1' \
-	--env 'FLAVOR_GW=whonix-gateway-cli' \
-	--env 'FLAVOR_WS=whonix-workstation-cli' \
-	--env 'TARGET=raw' \
-	--env 'ARCH=amd64' \
-	--env 'REPO=true' \
-	--env 'TYPE=vm' \
-	--env 'CLEAN=true' \
-	--env 'APT_ONION=false' \
-	--volume <HOST_DIR>:/home/user \
-	--dns 127.0.2.1 <IMAGE_ID> 
-```
-If you wish to build a single flavor, simply remove the other FLAVOR ENV entry:
-```
-docker run --name whonix_builder -it --privileged \
-	--env 'WHONIX_TAG=17.2.0.7-stable' \
-	--env 'TBB_VERSION=13.5.1' \
-	--env 'FLAVOR_GW=whonix-gateway-cli' \
-	--env 'TARGET=raw' \
-	--env 'ARCH=amd64' \
-	--env 'REPO=true' \
-	--env 'TYPE=vm' \
-	--env 'CLEAN=true' \
-	--env 'APT_ONION=false' \
-	--volume <HOST_DIR>:/home/user \
-	--dns 127.0.2.1 <IMAGE_ID> 
-```
 - Containers can be restarted indefinitely
 - Repeating builds with the same tag simply updates the local repo and deletes
   existing ~/derivative-binary if `--env 'CLEAN=true'`
+- Multiple flavors can be build via `--env 'FLAVOR=<flavor> <flavor>'`
 - Additional build arguments can be added to `--env 'OPTS='`
 <details>
   <summary>
