@@ -6,7 +6,7 @@ set -e
 KEY_LOG="~/logs/key.log"
 GIT_LOG="~/logs/git.log"
 BUILD_LOG="~/logs/build.log"
-FLAVOR=(${FLAVOR_WS} ${FLAVOR_GW})
+read -a FLAVOR <<< "$FLAVOR"
 
 ### functions ###
 timestamp() { echo -e "\n${1} Time: $(date +'%H:%M:%S')\n" >> ${2}; }
@@ -36,13 +36,13 @@ sudo -u user /bin/bash -c "$FUNC_1; $FUNC_2; [ -f ~/derivative.asc ] || { wget h
 gpg --keyid-format long --import --import-options show-only --with-fingerprint ~/derivative.asc && \
 gpg --import ~/derivative.asc && gpg --check-sigs 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA; } &> ${KEY_LOG}; \
 
-timestamp 'Git Start' ${GIT_LOG}; [ -d ~/${WHONIX_TAG} ] || { cd ~/ && git clone --depth=1 --branch ${WHONIX_TAG} \
---jobs=4 --recurse-submodules --shallow-submodules https://github.com/Whonix/derivative-maker.git ${WHONIX_TAG} &>> ${GIT_LOG}; }; \
+timestamp 'Git Start' ${GIT_LOG}; [ -d ~/${TAG} ] || { cd ~/ && git clone --depth=1 --branch ${TAG} \
+--jobs=4 --recurse-submodules --shallow-submodules https://github.com/Whonix/derivative-maker.git ${TAG} &>> ${GIT_LOG}; }; \
 
-{ cd ~/${WHONIX_TAG}; git pull && git verify-tag ${WHONIX_TAG} && \
-git verify-commit ${WHONIX_TAG}^{commit} && git checkout --recurse-submodules ${WHONIX_TAG} && \
+{ cd ~/${TAG}; git pull && git verify-tag ${TAG} && \
+git verify-commit ${TAG}^{commit} && git checkout --recurse-submodules ${TAG} && \
 git describe && git status; } &>> ${GIT_LOG} && timestamp 'Git End' ${GIT_LOG} && \
 
 [ -d ~/derivative-binary ] && { ${CLEAN} && rm -r ~/derivative-binary; }; \
-tbb_version=${TBB_VERSION}; build_cmd ${#FLAVOR[@]} ${BUILD_LOG} '/home/user/${WHONIX_TAG}/derivative-maker --flavor ${FLAVOR[i]} 
+tbb_version=${TBB_VERSION}; build_cmd ${#FLAVOR[@]} ${BUILD_LOG} '/home/user/${TAG}/derivative-maker --flavor ${FLAVOR[i]} 
 --target ${TARGET} --arch ${ARCH} --repo ${REPO} --type ${TYPE} ${ONION} ${OPTS}' &>> ${BUILD_LOG}"
