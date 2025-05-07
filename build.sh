@@ -11,4 +11,4 @@ for i in ${REPO[@]}; do
 
 done
 
-sudo docker build -t tabletseeker/whonix-builder:latest --build-arg DNSCRYPT_VER=${VERSION[0]} .
+sudo docker build -t tabletseeker/whonix_builder:latest --build-arg DNSCRYPT_VER=${VERSION[0]} .
