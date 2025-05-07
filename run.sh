@@ -14,11 +14,12 @@ IMG="tabletseeker/whonix-builder"
 TAG="17.3.9.2-developers-only"
 TBB="14.5.1"
 LATEST=true
-${LATEST} && latest_ver
 
 [ -d ${VOLUME} ] || { mkdir -p ${VOLUME};
 sudo chown -R 1000:1000 ${VOLUME};
 sudo chmod -R 700 ${VOLUME}; }
+
+${LATEST} && latest_ver
 
 sudo docker run --name whonix-builder -it --rm --privileged \
 	--env "TAG=${TAG}" \
