@@ -10,7 +10,7 @@ TBB=$(curl -s https://aus1.torproject.org/torbrowser/update_3/release/download-l
 }
 
 VOLUME="$HOME/whonix-builder"
-IMG="tabletseeker/whonix-builder"
+IMG="tabletseeker/whonix_builder"
 TAG="17.3.9.2-developers-only"
 TBB="14.5.1"
 LATEST=true
@@ -21,7 +21,7 @@ sudo chmod -R 700 ${VOLUME}; }
 
 ${LATEST} && latest_ver
 
-sudo docker run --name whonix-builder -it --rm --privileged \
+sudo docker run --name whonix_builder -it --rm --privileged \
 	--env "TAG=${TAG}" \
 	--env "TBB_VERSION=${TBB}" \
 	--env 'FLAVOR=whonix-gateway-cli whonix-workstation-cli' \
