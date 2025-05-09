@@ -31,7 +31,7 @@ sudo docker run --name whonix_builder -it --rm --privileged \
 	--env 'REPO=false' \
 	--env 'TYPE=vm' \
 	--env 'CLEAN=false' \
- 	--env "OPTS=$OPTS" \
+ 	--env "OPTS=${OPTS}" \
 	--env 'APT_ONION=false' \
 	--volume ${VOLUME}:/home/user \
 	--dns 127.0.2.1 ${IMG}
