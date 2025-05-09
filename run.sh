@@ -20,6 +20,8 @@ LATEST=true
 sudo chown -R 1000:1000 ${VOLUME};
 sudo chmod -R 700 ${VOLUME}; }
 
+sudo modprobe loop dm-mod
+
 ${LATEST} && latest_ver || true
 
 sudo docker run --name whonix_builder -it --rm --privileged \
