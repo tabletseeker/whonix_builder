@@ -20,7 +20,7 @@ LATEST=true
 sudo chown -R 1000:1000 ${VOLUME};
 sudo chmod -R 700 ${VOLUME}; }
 
-sudo modprobe loop dm-mod
+lsmod | grep -q "loop" || sudo modprobe loop dm-mod
 
 ${LATEST} && latest_ver || true
 
