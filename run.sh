@@ -13,6 +13,7 @@ VOLUME="$HOME/whonix_builder_mnt"
 IMG="tabletseeker/whonix_builder"
 TAG="17.3.9.2-developers-only"
 TBB="14.5.1"
+OPTS=""
 LATEST=true
 
 [ -d ${VOLUME} ] || { mkdir -p ${VOLUME};
@@ -30,6 +31,7 @@ sudo docker run --name whonix_builder -it --rm --privileged \
 	--env 'REPO=true' \
 	--env 'TYPE=vm' \
 	--env 'CLEAN=true' \
+ 	--env "OPTS=$OPTS"
 	--env 'APT_ONION=false' \
 	--volume ${VOLUME}:/home/user \
 	--dns 127.0.2.1 ${IMG}
