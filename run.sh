@@ -26,12 +26,12 @@ sudo docker run --name whonix_builder -it --rm --privileged \
 	--env "TAG=${TAG}" \
 	--env "TBB_VERSION=${TBB}" \
 	--env 'FLAVOR=whonix-gateway-cli whonix-workstation-cli' \
-	--env 'TARGET=raw' \
+	--env 'TARGET=qcow2' \
 	--env 'ARCH=amd64' \
-	--env 'REPO=true' \
+	--env 'REPO=false' \
 	--env 'TYPE=vm' \
-	--env 'CLEAN=true' \
- 	--env "OPTS=$OPTS"
+	--env 'CLEAN=false' \
+ 	--env "OPTS=$OPTS" \
 	--env 'APT_ONION=false' \
 	--volume ${VOLUME}:/home/user \
 	--dns 127.0.2.1 ${IMG}
