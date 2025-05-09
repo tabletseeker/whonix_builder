@@ -15,7 +15,7 @@ FUNC_1=$(declare -f timestamp)
 FUNC_2=$(declare -f build_cmd)
 
 ### if APT_ONION true ###
-${APT_ONION} && ONION="--connection onion" && mv /50_user.conf /lib/systemd/system/apt-cacher-ng.service.d/50_user.conf && \
+${APT_ONION} && { ONION="--connection onion" && mv /50_user.conf /lib/systemd/system/apt-cacher-ng.service.d/50_user.conf && \
 { cat >> /etc/apt-cacher-ng/acng.conf << EOF
 PassThroughPattern: .*
 BindAddress: localhost
@@ -26,7 +26,7 @@ AllowUserPorts: 0
 EOF
 } && echo -e 'Acquire::http { Proxy "http://127.0.0.1:3142"; }\nAcquire::BlockDotOnion "false";' > /etc/apt/apt.conf.d/30user && \
 systemctl daemon-reload && systemctl start tor.service && \
-systemctl restart apt-cacher-ng.service && sleep 1
+systemctl restart apt-cacher-ng.service && sleep 1; } || true
 
 ### start dnscrypt service ###
 sudo -u user /bin/bash -c '{ mkdir -p ~/logs && sudo systemctl start dnscrypt-proxy.service; sleep 1; }'
@@ -43,6 +43,6 @@ timestamp 'Git Start' ${GIT_LOG}; [ -d ~/${TAG} ] || { cd ~/ && git clone --dept
 git verify-commit ${TAG}^{commit} && git checkout --recurse-submodules ${TAG} && \
 git describe && git status; } &>> ${GIT_LOG} && timestamp 'Git End' ${GIT_LOG} && \
 
-[ -d ~/derivative-binary ] && { ${CLEAN} && rm -r ~/derivative-binary; }; \
+${CLEAN} && rm -r ~/derivative-binary || true; \
 tbb_version=${TBB_VERSION}; build_cmd ${#FLAVOR[@]} ${BUILD_LOG} '/home/user/${TAG}/derivative-maker --flavor ${FLAVOR[i]} 
 --target ${TARGET} --arch ${ARCH} --repo ${REPO} --type ${TYPE} ${ONION} ${OPTS}' &>> ${BUILD_LOG}"
