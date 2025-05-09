@@ -43,6 +43,6 @@ timestamp 'Git Start' ${GIT_LOG}; [ -d ~/${TAG} ] || { cd ~/ && git clone --dept
 git verify-commit ${TAG}^{commit} && git checkout --recurse-submodules ${TAG} && \
 git describe && git status; } &>> ${GIT_LOG} && timestamp 'Git End' ${GIT_LOG} && \
 
-${CLEAN} && rm -r ~/derivative-binary || true; \
+${CLEAN} && rm -rf ~/derivative-binary || true; \
 tbb_version=${TBB_VERSION}; build_cmd ${#FLAVOR[@]} ${BUILD_LOG} '/home/user/${TAG}/derivative-maker --flavor ${FLAVOR[i]} 
 --target ${TARGET} --arch ${ARCH} --repo ${REPO} --type ${TYPE} ${ONION} ${OPTS}' &>> ${BUILD_LOG}"
