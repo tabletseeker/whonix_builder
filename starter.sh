@@ -34,15 +34,15 @@ sudo -u user /bin/bash -c '{ mkdir -p ~/logs && sudo systemctl start dnscrypt-pr
 ### start whonix build ###
 sudo -u user /bin/bash -c "$FUNC_1; $FUNC_2; [ -f ~/derivative.asc ] || { wget https://www.whonix.org/keys/derivative.asc -O ~/derivative.asc && \
 gpg --keyid-format long --import --import-options show-only --with-fingerprint ~/derivative.asc && \
-gpg --import ~/derivative.asc && gpg --check-sigs 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA; } &> ${KEY_LOG}; \
+gpg --import ~/derivative.asc && gpg --check-sigs 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA; } 2>&1 | tee ${KEY_LOG}; \
 
-timestamp 'Git Start' ${GIT_LOG}; [ -d ~/derivative-maker ] || { git clone --depth=1 --branch ${TAG} \
---jobs=4 --recurse-submodules --shallow-submodules https://github.com/Whonix/derivative-maker.git ~/derivative-maker &>> ${GIT_LOG}; }; \
+timestamp 'Git Start' ${GIT_LOG}; [ -d ~/derivative-maker ] || git clone --depth=1 --branch ${TAG} \
+--jobs=4 --recurse-submodules --shallow-submodules https://github.com/Whonix/derivative-maker.git ~/derivative-maker 2>&1 | tee -a ${GIT_LOG}; \
 
 { cd ~/derivative-maker; git pull && git verify-tag ${TAG} && \
 git verify-commit ${TAG}^{commit} && git checkout --recurse-submodules ${TAG} && \
-git describe && git status; } &>> ${GIT_LOG} && timestamp 'Git End' ${GIT_LOG} && \
+git describe && git status; } 2>&1 | tee -a ${GIT_LOG} && timestamp 'Git End' ${GIT_LOG} && \
 
 ${CLEAN} && rm -rf ~/derivative-binary || true; \
 tbb_version=${TBB_VERSION}; build_cmd ${#FLAVOR[@]} ${BUILD_LOG} '/home/user/derivative-maker/derivative-maker --flavor ${FLAVOR[i]} 
---target ${TARGET} --arch ${ARCH} --repo ${REPO} --type ${TYPE} ${ONION} ${OPTS}' &>> ${BUILD_LOG}"
+--target ${TARGET} --arch ${ARCH} --repo ${REPO} --type ${TYPE} ${ONION} ${OPTS}' 2>&1 | tee -a ${BUILD_LOG}"
