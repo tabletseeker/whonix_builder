@@ -1,11 +1,5 @@
 FROM debian:bookworm-slim AS baseimage
 
-LABEL maintainer="tabletseeker"
-LABEL org.label-schema.description="Containerization of Whonix/derivative-maker"
-LABEL org.label-schema.name="whonix_builder"
-LABEL org.label-schema.schema-version="1.0"
-LABEL org.label-schema.vcs-url="https://github.com/tabletseeker/whonix_builder"
-
 ENV USER=user \
 HOME=/home/user \
 GID=1000 \
@@ -45,6 +39,12 @@ RUN apt-get update && apt-get install --no-install-recommends -y apt-transport-h
 	rm -rf /var/lib/apt/lists/* /var/cache/apt/* /tmp/* /var/tmp/*
 
 FROM baseimage
+
+LABEL maintainer="tabletseeker"
+LABEL org.label-schema.description="Containerization of Whonix/derivative-maker"
+LABEL org.label-schema.name="whonix_builder"
+LABEL org.label-schema.schema-version="1.0"
+LABEL org.label-schema.vcs-url="https://github.com/tabletseeker/whonix_builder"
 
 COPY entrypoint.sh /usr/bin/entrypoint.sh
 COPY dnscrypt-proxy.toml /etc/dnscrypt-proxy/dnscrypt-proxy.toml
