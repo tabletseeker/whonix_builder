@@ -26,24 +26,28 @@ cd whonix_builder
 ./build.sh
 ```
 ## Usage
-* The script automatically finds the latest [tag](https://github.com/Whonix/derivative-maker/tags) and [tor version](https://aus1.torproject.org/torbrowser/update_3/release/downloads.json)
 * Build with the latest tag and tor version:
 ```
 ./run.sh
+```
+* Build with specifc tag number:
+```
+./run.sh -t 17.3.9.1-developers-only
+```
+* Build with specifc tor version:
+```
+./run.sh -o 14.2.1
+```
+* Build with specifc tag and tor version:
+```
+./run.sh -t 17.3.9.9-developers-only -o 14.2.1
 ```
 |  Arguments                                             | Value                                                                                          
 | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------|
 | -t\|--tag           | Choose a specific tag	 |
 | -o\|--onion  	      | Choose a specifc tor version |
 
-* Build with specifc tag number:
-```
-./run.sh -t 17.3.9.1-developers-only
-```
-* Build with specifc tag and tor version:
-```
-./run.sh -t 17.3.9.9-developers-only -o 14.2.1
-```
+
 ### Environment Variables
 
 |  Variable                                             | Values                                                                                          
