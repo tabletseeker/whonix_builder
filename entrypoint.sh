@@ -41,7 +41,7 @@ timestamp 'Git Start' ${GIT_LOG}; [ -d ~/derivative-maker ] || git clone --depth
 ### git check & verify ###
 { cd ~/derivative-maker; git pull; [ ${TAG} = 'master' ] || { git describe; git verify-tag ${TAG}; }; \
 git verify-commit ${TAG}^{commit}; git checkout --recurse-submodules ${TAG}; \
-git status; } 2>&1 | tee -a ${GIT_LOG} && timestamp 'Git End' ${GIT_LOG}
+git status; } 2>&1 | tee -a ${GIT_LOG}; timestamp 'Git End' ${GIT_LOG}
 ### execute build command ###
 ${CLEAN} && rm -rf ~/derivative-binary || true
 build_cmd ${#FLAVOR[@]} ${BUILD_LOG} 2>&1 | tee -a ${BUILD_LOG}; exec "$@"
