@@ -34,6 +34,10 @@ cd whonix_builder
 ```
 ./run.sh -t 17.3.9.1-developers-only
 ```
+* Build with master:
+```
+./run.sh -t master
+```
 * Build with specifc tor version:
 ```
 ./run.sh -o 14.2.1
