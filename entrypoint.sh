@@ -32,16 +32,16 @@ pid_check "dnscrypt-proxy" || { /usr/bin/dnscrypt-proxy --config /etc/dnscrypt-p
 echo -e "Waiting for processes to start...."
 sleep 6
 ### get derivative key ###
-[ -f ~/derivative.asc ] || { wget https://www.whonix.org/keys/derivative.asc -O ~/derivative.asc && \
-gpg --keyid-format long --import --import-options show-only --with-fingerprint ~/derivative.asc && \
-gpg --import ~/derivative.asc && gpg --check-sigs 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA; } 2>&1 | tee ${KEY_LOG}
+[ -f ~/derivative.asc ] || { wget https://www.whonix.org/keys/derivative.asc -O ~/derivative.asc; \
+gpg --keyid-format long --import --import-options show-only --with-fingerprint ~/derivative.asc; \
+gpg --import ~/derivative.asc; gpg --check-sigs 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA; } 2>&1 | tee ${KEY_LOG}
 ### clone latest git ###
 timestamp 'Git Start' ${GIT_LOG}; [ -d ~/derivative-maker ] || git clone --depth=1 --branch ${TAG} \
 --jobs=4 --recurse-submodules --shallow-submodules https://github.com/Whonix/derivative-maker.git ~/derivative-maker 2>&1 | tee -a ${GIT_LOG}
 ### git check & verify ###
-{ cd ~/derivative-maker; git pull && git verify-tag ${TAG} && \
-git verify-commit ${TAG}^{commit} && git checkout --recurse-submodules ${TAG} && \
-git describe && git status; } 2>&1 | tee -a ${GIT_LOG} && timestamp 'Git End' ${GIT_LOG}
+{ cd ~/derivative-maker; git pull; [ ${TAG} = 'master' ] || { git describe; git verify-tag ${TAG}; }; \
+git verify-commit ${TAG}^{commit}; git checkout --recurse-submodules ${TAG}; \
+git status; } 2>&1 | tee -a ${GIT_LOG} && timestamp 'Git End' ${GIT_LOG}
 ### execute build command ###
 ${CLEAN} && rm -rf ~/derivative-binary || true
 build_cmd ${#FLAVOR[@]} ${BUILD_LOG} 2>&1 | tee -a ${BUILD_LOG}; exec "$@"
