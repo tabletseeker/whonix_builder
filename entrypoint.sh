@@ -7,6 +7,7 @@ LOG_DIR="${HOME}/logs"
 KEY_LOG="${LOG_DIR}/key.log"
 GIT_LOG="${LOG_DIR}/git.log"
 BUILD_LOG="${LOG_DIR}/build.log"
+GIT_URL="https://github.com/Whonix/derivative-maker.git"
 read -a FLAVOR <<< "$FLAVOR"
 ### functions ###
 timestamp() { echo -e "\n${1} Time: $(date +'%D|%H:%M:%S')\n" >> ${2}; }
@@ -37,7 +38,7 @@ gpg --keyid-format long --import --import-options show-only --with-fingerprint ~
 gpg --import ~/derivative.asc; gpg --check-sigs 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA; } 2>&1 | tee ${KEY_LOG}
 ### clone help-steps ###
 [ -d ~/derivative-maker ] || { mkdir ~/derivative-maker; cd ~/derivative-maker; git init -b master; \
-git remote add -f origin https://github.com/Whonix/derivative-maker.git; \
+git remote add -f origin ${GIT_URL}; \
 git config core.sparseCheckout true; \
 cat > .git/info/sparse-checkout << EOF
 help-steps/pre
@@ -47,11 +48,10 @@ EOF
 git pull origin master; }
 ### clone latest tag ###
 timestamp 'Git Start' ${GIT_LOG}; [ -d ~/${TAG} ] || git clone --depth=1 --branch ${TAG} \
---jobs=4 --recurse-submodules --shallow-submodules https://github.com/Whonix/derivative-maker.git ~/${TAG} 2>&1 | tee -a ${GIT_LOG}
+--jobs=4 --recurse-submodules --shallow-submodules ${GIT_URL} ~/${TAG} 2>&1 | tee -a ${GIT_LOG}
 ### git check & verify ###
 { cd ~/${TAG}; git pull; [ ${TAG} = 'master' ] || { git describe; git verify-tag ${TAG}; }; \
 git verify-commit ${TAG}^{commit}; git checkout --recurse-submodules ${TAG}; \
 git status; } 2>&1 | tee -a ${GIT_LOG}; timestamp 'Git End' ${GIT_LOG}
 ### execute build command ###
-${CLEAN} && rm -rf ~/derivative-binary || true
 build_cmd ${#FLAVOR[@]} ${BUILD_LOG} 2>&1 | tee -a ${BUILD_LOG}; exec "$@"
