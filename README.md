@@ -34,10 +34,6 @@ cd whonix_builder
 ```
 ./run.sh -t 17.3.9.1-developers-only
 ```
-* Build with master:
-```
-./run.sh -t master
-```
 * Build with specifc tor version:
 ```
 ./run.sh -o 14.2.1
@@ -64,7 +60,6 @@ cd whonix_builder
 | CONNECTION         | `clearnet` `onion` 											 |
 | REPO              | `true` `false` 											 |
 | TYPE              | `vm` `host` 											 |
-| CLEAN             | `true` `false` 											 |
 | APT_CACHER_ARGS    | Additional apt-cacher-ng options 											 |
 | OPTS         		| Additional derivative-maker options		
 | tbb_version         | Tor version 											 |
@@ -104,6 +99,7 @@ Can be found in the volume which mounts the container's home directory.
 ## Tips
 * Source: `whonix_builder/run.sh`
 * Multiple flavors can be built via `--env 'FLAVOR=<flavor> <flavor> <flavor>'`
+* Clone and build from master branch with: `./run.sh -t master`
 * Additional apt-cacher-ng arguments can be added to `APT_CACHER_ARGS` via `--env 'APT_CACHER_ARGS=Foreground=1 AllowUserPorts=0'`
 * Additional build arguments can be added to `OPTS` via `--env 'OPTS=--allow-uncommitted true --vmsize 10G'`
 <details>
