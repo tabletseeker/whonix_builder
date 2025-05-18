@@ -37,6 +37,7 @@ sleep 6
 gpg --keyid-format long --import --import-options show-only --with-fingerprint ~/derivative.asc; \
 gpg --import ~/derivative.asc; gpg --check-sigs 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA; } 2>&1 | tee ${KEY_LOG}
 ### clone help-steps ###
+timestamp 'Git Start' ${GIT_LOG}
 [ -d ~/derivative-maker ] || { mkdir ~/derivative-maker; cd ~/derivative-maker; git init -b master; \
 git remote add -f origin ${GIT_URL}; \
 git config core.sparseCheckout true; \
@@ -47,7 +48,7 @@ help-steps/variables
 EOF
 git pull origin master; } 2>&1 | tee -a ${GIT_LOG}
 ### clone latest tag ###
-timestamp 'Git Start' ${GIT_LOG}; [ -d ~/${TAG} ] || git clone --depth=1 --branch ${TAG} \
+[ -d ~/${TAG} ] || git clone --depth=1 --branch ${TAG} \
 --jobs=4 --recurse-submodules --shallow-submodules ${GIT_URL} ~/${TAG} 2>&1 | tee -a ${GIT_LOG}
 ### git check & verify ###
 { cd ~/${TAG}; git pull; [ ${TAG} = 'master' ] || { git describe; git verify-tag ${TAG}; }; \
