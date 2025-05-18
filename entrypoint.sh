@@ -45,7 +45,7 @@ help-steps/pre
 help-steps/colors
 help-steps/variables
 EOF
-git pull origin master; }
+git pull origin master; } 2>&1 | tee -a ${GIT_LOG}
 ### clone latest tag ###
 timestamp 'Git Start' ${GIT_LOG}; [ -d ~/${TAG} ] || git clone --depth=1 --branch ${TAG} \
 --jobs=4 --recurse-submodules --shallow-submodules ${GIT_URL} ~/${TAG} 2>&1 | tee -a ${GIT_LOG}
