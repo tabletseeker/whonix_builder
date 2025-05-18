@@ -12,7 +12,7 @@ read -a FLAVOR <<< "$FLAVOR"
 timestamp() { echo -e "\n${1} Time: $(date +'%D|%H:%M:%S')\n" >> ${2}; }
 pid_check() { pgrep -f "${1}" > /dev/null; }
 build_cmd() { for ((i=0;i<${1};i++)); do timestamp 'Build Start' ${2}; \
-/home/user/derivative-maker/derivative-maker \
+/home/user/${TAG}/derivative-maker \
 --flavor ${FLAVOR[i]} \
 --target ${TARGET} \
 --arch ${ARCH} \
@@ -35,11 +35,21 @@ sleep 6
 [ -f ~/derivative.asc ] || { wget https://www.whonix.org/keys/derivative.asc -O ~/derivative.asc; \
 gpg --keyid-format long --import --import-options show-only --with-fingerprint ~/derivative.asc; \
 gpg --import ~/derivative.asc; gpg --check-sigs 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA; } 2>&1 | tee ${KEY_LOG}
-### clone latest git ###
-timestamp 'Git Start' ${GIT_LOG}; [ -d ~/derivative-maker ] || git clone --depth=1 --branch ${TAG} \
---jobs=4 --recurse-submodules --shallow-submodules https://github.com/Whonix/derivative-maker.git ~/derivative-maker 2>&1 | tee -a ${GIT_LOG}
+### clone help-steps ###
+[ -d ~/derivative-maker ] || { mkdir ~/derivative-maker; cd ~/derivative-maker; git init -b master; \
+git remote add -f origin https://github.com/Whonix/derivative-maker.git; \
+git config core.sparseCheckout true; \
+cat > .git/info/sparse-checkout << EOF
+help-steps/pre
+help-steps/colors
+help-steps/variables
+EOF
+git pull origin master; }
+### clone latest tag ###
+timestamp 'Git Start' ${GIT_LOG}; [ -d ~/${TAG} ] || git clone --depth=1 --branch ${TAG} \
+--jobs=4 --recurse-submodules --shallow-submodules https://github.com/Whonix/derivative-maker.git ~/${TAG} 2>&1 | tee -a ${GIT_LOG}
 ### git check & verify ###
-{ cd ~/derivative-maker; git pull; [ ${TAG} = 'master' ] || { git describe; git verify-tag ${TAG}; }; \
+{ cd ~/${TAG}; git pull; [ ${TAG} = 'master' ] || { git describe; git verify-tag ${TAG}; }; \
 git verify-commit ${TAG}^{commit}; git checkout --recurse-submodules ${TAG}; \
 git status; } 2>&1 | tee -a ${GIT_LOG}; timestamp 'Git End' ${GIT_LOG}
 ### execute build command ###
