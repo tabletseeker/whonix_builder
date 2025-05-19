@@ -10,8 +10,7 @@ HOME=/home/user \
 UID=1000 \
 GID=1000 \
 APT_CACHER_USER=apt-cacher-ng
-ARG APT_CACHER_NG_VER \
-APT_CACHER_NG_CACHE_DIR \
+ARG APT_CACHER_NG_CACHE_DIR \
 APT_CACHER_NG_LOG_DIR
 
 RUN apt-get update && apt-get install --no-install-recommends -y apt-transport-https ca-certificates && \
@@ -21,7 +20,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y apt-transport-h
 	time curl lsb-release fakeroot dpkg-dev fasttrack-archive-keyring \
 	apt-utils wget procps gpg gpg-agent debian-keyring sudo adduser torsocks tor apt-transport-tor safe-rm && \
 	### apt-cacher-ng ###
-	DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y apt-cacher-ng=${APT_CACHER_NG_VER} && \
+	DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y apt-cacher-ng && \
  	### setup directories ###
   	mkdir -p /etc/dnscrypt-proxy /var/cache/dnscrypt-proxy \
   	/run/apt-cacher-ng ${APT_CACHER_NG_CACHE_DIR} ${APT_CACHER_NG_LOG_DIR} && \
