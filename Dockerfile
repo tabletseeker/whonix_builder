@@ -1,12 +1,16 @@
+FROM debian:trixie-slim AS dnscrypt
+
+RUN apt-get update && \
+	DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y dnscrypt-proxy
+
 FROM debian:bookworm-slim AS baseimage
 
 ENV USER=user \
 HOME=/home/user \
-GID=1000 \
 UID=1000 \
+GID=1000 \
 APT_CACHER_USER=apt-cacher-ng
-ARG DNSCRYPT_VER \
-APT_CACHER_NG_VER \
+ARG APT_CACHER_NG_VER \
 APT_CACHER_NG_CACHE_DIR \
 APT_CACHER_NG_LOG_DIR
 
@@ -16,9 +20,6 @@ RUN apt-get update && apt-get install --no-install-recommends -y apt-transport-h
 	apt-get update && apt-get install --no-install-recommends -y git \
 	time curl lsb-release fakeroot dpkg-dev fasttrack-archive-keyring \
 	apt-utils wget procps gpg gpg-agent debian-keyring sudo adduser torsocks tor apt-transport-tor safe-rm && \
-	### dnscrypt-proxy ###
- 	wget -qO- https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/${DNSCRYPT_VER}/dnscrypt-proxy-linux_x86_64-${DNSCRYPT_VER}.tar.gz | \
- 	tar --strip-components 1 -xvz -C /usr/bin linux-x86_64/dnscrypt-proxy && \
 	### apt-cacher-ng ###
 	DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y apt-cacher-ng=${APT_CACHER_NG_VER} && \
  	### setup directories ###
@@ -51,6 +52,7 @@ COPY dnscrypt-proxy.toml /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 COPY public-resolvers.md public-resolvers.md.minisig /var/cache/dnscrypt-proxy
 COPY acng.conf /etc/apt-cacher-ng/acng.conf
 COPY torrc /etc/tor/torrc
+COPY --from=dnscrypt /usr/sbin/dnscrypt-proxy /usr/bin/dnscrypt-proxy
 
 VOLUME ["${HOME}","${APT_CACHER_NG_CACHE_DIR}"]
 
