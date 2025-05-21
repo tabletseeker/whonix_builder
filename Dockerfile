@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y apt-transport-h
 	sed -i "s|http|https|g" /etc/apt/sources.list.d/debian.sources && \
 	apt-get update && apt-get install --no-install-recommends -y git \
 	time curl lsb-release fakeroot dpkg-dev fasttrack-archive-keyring \
-	apt-utils wget procps gpg gpg-agent debian-keyring sudo adduser torsocks tor apt-transport-tor safe-rm && \
+	apt-utils wget procps gpg gpg-agent debian-keyring sudo adduser torsocks tor apt-transport-tor dmsetup safe-rm && \
 	### apt-cacher-ng ###
 	DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y apt-cacher-ng && \
  	### setup directories ###
