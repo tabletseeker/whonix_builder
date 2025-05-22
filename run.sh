@@ -48,7 +48,7 @@ volume_check "${BUILDER_VOLUME}" '1000:1000' '700'
 volume_check "${CACHER_VOLUME}" '101:102' '777'
 latest_version
 
-sudo modprobe -a loop dm-mod
+sudo modprobe -a loop dm_mod
 
 sudo docker run --name whonix_builder -it --rm --privileged \
 	--env "TAG=${TAG}" \
