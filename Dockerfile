@@ -29,7 +29,7 @@ RUN sed -i '0,/bookworm/ s/bookworm/bookworm trixie/' /etc/apt/sources.list.d/de
 
 FROM baseimage
 
-LABEL maintainer="tabletseeker"
+LABEL maintainer="derivative-maker"
 LABEL org.label-schema.description="Containerization of Whonix/derivative-maker"
 LABEL org.label-schema.name="whonix_builder"
 LABEL org.label-schema.schema-version="1.0"
