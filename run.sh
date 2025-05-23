@@ -4,8 +4,8 @@ set -e
 
 latest_version() {
 
-[ ! -z ${TAG} ] || TAG=$(curl -s https://api.github.com/repos/Whonix/derivative-maker/tags | jq '.[]' |  jq -r '.name | select(test("([0-9.]+-(developers|stable))"))' | head -1)
-[ ! -z ${TOR} ] || TOR=$(curl -s https://aus1.torproject.org/torbrowser/update_3/release/download-linux-x86_64.json | jq -r '.version')
+[ -n "${TAG}" ] || TAG=$(curl -s https://api.github.com/repos/Whonix/derivative-maker/tags | jq '.[]' |  jq -r '.name | select(test("([0-9.]+-(developers|stable))"))' | head -1)
+[ -n "${TOR}" ] || TOR=$(curl -s https://aus1.torproject.org/torbrowser/update_3/release/download-linux-x86_64.json | jq -r '.version')
 
 }
 
