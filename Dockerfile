@@ -40,7 +40,7 @@ COPY acng.conf /etc/apt-cacher-ng/acng.conf
 COPY torrc /etc/tor/torrc
 COPY dnscrypt-proxy/dnscrypt-proxy.toml /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 COPY dnscrypt-proxy/dnscrypt-proxy.service /usr/lib/systemd/system/dnscrypt-proxy.service
-COPY dnscrypt-proxy/ /var/cache/dnscrypt-proxy/
+COPY dnscrypt-proxy/public-resolvers.md dnscrypt-proxy/public-resolvers.md.minisig /var/cache/dnscrypt-proxy/
 
 VOLUME ["${HOME}","${APT_CACHER_NG_CACHE_DIR}"]
 
