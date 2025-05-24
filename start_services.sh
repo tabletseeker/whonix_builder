@@ -2,10 +2,15 @@
 
 set -e
 
-systemctl restart apt-cacher-ng.service dnscrypt-proxy.service
-[ ! ${CONNECTION} = "onion" ] || systemctl restart tor.service
+SERVICES=("apt-cacher-ng" "dnscrypt-proxy")
+
+[ ! ${CONNECTION} = "onion" ] || SERVICES+=("tor")
+
+systemctl restart ${SERVICES[@]}
+
 echo 'Waiting for services to start...'
 sleep 5
-systemctl status apt-cacher-ng.service dnscrypt-proxy.service
-[ ! ${CONNECTION} = "onion" ] || systemctl status tor.service
+
+systemctl status ${SERVICES[@]}
+
 exec "$@"
