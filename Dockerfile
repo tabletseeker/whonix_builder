@@ -44,6 +44,4 @@ COPY dnscrypt-proxy/public-resolvers.md dnscrypt-proxy/public-resolvers.md.minis
 
 VOLUME ["${HOME}","${APT_CACHER_NG_CACHE_DIR}"]
 
-ENTRYPOINT ["/usr/bin/entrypoint.sh"]
-
-CMD ["/bin/bash", "-c", "/usr/bin/start_services.sh && /usr/bin/su ${USER} --command '/usr/bin/start_build.sh'"]
+CMD ["/bin/bash", "-c", "/usr/bin/entrypoint.sh /usr/bin/start_services.sh /usr/bin/su ${USER} --command '/usr/bin/start_build.sh'"]
