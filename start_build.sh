@@ -24,8 +24,6 @@ lo_check; \
 --connection ${CONNECTION} \
 --repo ${REPO} \
 ${OPTS}; timestamp 'Build End' ${2}; lo_check; done; }
-### create log directory ###
-[ -d ${LOG_DIR} ] || mkdir -p ${LOG_DIR}
 ### get derivative key ###
 [ -f ~/derivative.asc ] || { wget https://www.whonix.org/keys/derivative.asc -O ~/derivative.asc; \
 gpg --keyid-format long --import --import-options show-only --with-fingerprint ~/derivative.asc; \
