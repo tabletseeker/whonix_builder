@@ -6,7 +6,7 @@ HOME=/home/user
 RUN sed -i '0,/bookworm/ s/bookworm/bookworm trixie/' /etc/apt/sources.list.d/debian.sources && \
 	apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y -t bookworm \
 	dbus dbus-user-session git time curl lsb-release fakeroot dpkg-dev \
-	fasttrack-archive-keyring gpg gpg-agent sudo adduser ca-certificates \
+	fasttrack-archive-keyring safe-rm gpg gpg-agent sudo adduser ca-certificates \
 	wget torsocks tor apt-transport-tor dmsetup apt-cacher-ng && \
 	DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y -t trixie dnscrypt-proxy && \
 	### user account ###
