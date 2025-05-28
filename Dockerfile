@@ -32,4 +32,6 @@ COPY dnscrypt-proxy/dnscrypt-proxy.toml /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 COPY dnscrypt-proxy/dnscrypt-proxy.service /usr/lib/systemd/system/dnscrypt-proxy.service
 COPY dnscrypt-proxy/public-resolvers.md dnscrypt-proxy/public-resolvers.md.minisig /var/cache/dnscrypt-proxy/
 
-CMD ["/bin/bash", "-c", "/usr/bin/entrypoint.sh /usr/bin/start_services.sh /usr/bin/su ${USER} --command '/usr/bin/start_build.sh'"]
+ENTRYPOINT ["/usr/bin/entrypoint.sh","/usr/bin/start_services.sh"]
+
+CMD ["/bin/bash", "-c", "/usr/bin/su ${USER} --preserve-environment --session-command '/usr/bin/start_build.sh'"]
