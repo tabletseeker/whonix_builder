@@ -34,6 +34,7 @@ for i in "$@"; do
 	exit 1
 	;;
 	*)
+ 	shift
 	;;
 	
 	esac
