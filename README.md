@@ -1,4 +1,4 @@
-![o,age](https://i.postimg.cc/C5Jhp2WW/derivative-logo.png)
+![o,age](https://i.postimg.cc/qRdx2Hdz/background.png)
 
 Utilizes a debian:bookworm Docker Container that automatically verifies and builds Whonix/Kicksecure images, incorporating the official derivative-maker build script, while including environment variables to customize every available build option and generating log files of the entire build process. Additionally, dnscrypt-proxy and the ability to use onion sources with torified apt-cacher-ng offer maximum privacy.
  
